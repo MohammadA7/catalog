@@ -6,9 +6,11 @@ from sqlalchemy.exc import SQLAlchemyError
 from modules import Base, User, Category, Item
 from flask_httpauth import HTTPBasicAuth
 from oauth2client.client import flow_from_clientsecrets, FlowExchangeError
+from ratelimit import get_view_rate_limit, on_over_limit, ratelimit
 import json
 import string
 import httplib2
+import random
 
 app = Flask(__name__)
 auth = HTTPBasicAuth()
@@ -21,8 +23,20 @@ CLIENT_ID = json.loads(open('client_secret.json', 'r').read())[
     'web']['client_id']
 
 
+@app.after_request
+def inject_x_rate_headers(response):
+    limit = get_view_rate_limit()
+    if limit and limit.send_x_headers:
+        h = response.headers
+        h.add('X-RateLimit-Remaining', str(limit.remaining))
+        h.add('X-RateLimit-Limit', str(limit.limit))
+        h.add('X-RateLimit-Reset', str(limit.reset))
+    return response
+
+
 @app.route('/', methods=['GET'])
 @app.route('/catalog/',  methods=['GET'])
+@ratelimit(limit=30, per=60 * 1)
 def catalogs():
     categories = session.query(Category).all()
     if len(categories):
@@ -32,6 +46,7 @@ def catalogs():
 
 
 @app.route('/gconnect')
+@ratelimit(limit=30, per=60 * 1)
 def login_with_google():
     # STEP 1 - Parse the auth code
     auth_code = request.json.get('auth_code')
@@ -121,6 +136,7 @@ def verify_password(username_or_token, password):
 
 
 @app.route('/token')
+@ratelimit(limit=30, per=60 * 1)
 @auth.login_required
 def get_auth_token():
     token = g.user.generate_auth_token()
@@ -128,6 +144,7 @@ def get_auth_token():
 
 
 @app.route('/register', methods=['POST'])
+@ratelimit(limit=30, per=60 * 1)
 def new_user():
     name = request.json.get('username').lower()
     password = request.json.get('password')
@@ -148,6 +165,7 @@ def new_user():
 
 
 @app.route('/catalog/<category>/items/', methods=['GET'])
+@ratelimit(limit=30, per=60 * 1)
 def categoryid(category):
     items = session.query(Item).filter_by(category_id=category).all()
     if len(items):
@@ -157,6 +175,7 @@ def categoryid(category):
 
 
 @app.route('/catalog/<category>/<item>/', methods=['GET'])
+@ratelimit(limit=30, per=60 * 1)
 def item(category, item):
     item = session.query(Item).filter_by(category_id=category, id=item).first()
     if item:
@@ -166,6 +185,7 @@ def item(category, item):
 
 
 @app.route('/catalog/<category>/create/', methods=['POST'])
+@ratelimit(limit=30, per=60 * 1)
 @auth.login_required
 def createItem(category):
     try:
@@ -193,6 +213,7 @@ def createItem(category):
 
 
 @app.route('/catalog/<category>/<item>/', methods=['PUT'])
+@ratelimit(limit=30, per=60 * 1)
 @auth.login_required
 def editItem(category, item):
     item = session.query(Item).filter_by(category_id=category, id=item).one()
@@ -231,6 +252,7 @@ def editItem(category, item):
 
 
 @app.route('/catalog/<category>/<item>/', methods=['DELETE'])
+@ratelimit(limit=30, per=60 * 1)
 @auth.login_required
 def deleteItem(category, item):
     item = session.query(Item).filter_by(category_id=category, id=item).one()
