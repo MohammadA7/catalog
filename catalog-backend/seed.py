@@ -28,22 +28,23 @@ session.commit()
 
 item1 = Item(name = "The Complete Web Developer Course 2.0", 
     description = "Learn Web Development by building 25 websites and mobile apps using HTML, CSS, Javascript, PHP, Python, MySQL & more!", 
-    url = "https://www.udemy.com/the-complete-web-developer-course-2/", price = "3299", rating = "4.5", category = category1)
-
+    url = "https://www.udemy.com/the-complete-web-developer-course-2/", price = "3299", rating = "4.5", category = category1,
+    user_id = 1)
 session.add(item1)
 session.commit()
 
 
 item2 = Item(name = "Fullstack Advanced React and GraphQL", 
     description = "This is a course that will teach you everything you need to build a full stack application with React.js and GraphQL.", 
-    url = "https://advancedreact.com/", price = "8900",rating = "0", category = category1)
-
+    url = "https://advancedreact.com/", price = "8900",rating = "0", category = category1,
+    user_id = 2)
 session.add(item2)
 session.commit()
 
 item3 = Item(name = "JavaScript: Understanding the Weird Parts", 
     description = "An advanced JavaScript course for everyone! Scope, closures, prototypes, 'this', build your own framework, and more.", 
-    url = "https://www.udemy.com/understand-javascript/", price = "2899", rating = "4.7", category = category1)
+    url = "https://www.udemy.com/understand-javascript/", price = "2899", rating = "4.7", category = category1,
+    user_id = 2)
 
 session.add(item3)
 session.commit()
@@ -51,7 +52,8 @@ session.commit()
 
 item4 = Item(name = "The Complete Web Developer Course 2.0", 
     description = "Learn Web Development by building 25 websites and mobile apps using HTML, CSS, Javascript, PHP, Python, MySQL & more!", 
-    url = "https://www.udemy.com/the-complete-web-developer-course-2/", price = "3299", rating = "4.5", category = category1)
+    url = "https://www.udemy.com/the-complete-web-developer-course-2/", price = "3299", rating = "4.5", category = category1,
+    user_id = 2)
 
 session.add(item4)
 session.commit()
@@ -59,7 +61,8 @@ session.commit()
 
 item5 = Item(name = "Fullstack Advanced React and GraphQL", 
     description = "This is a course that will teach you everything you need to build a full stack application with React.js and GraphQL.", 
-    url = "https://advancedreact.com/", price = "8900",rating = "0", category = category1)
+    url = "https://advancedreact.com/", price = "8900",rating = "0", category = category1,
+    user_id = 2)
 
 session.add(item5)
 session.commit()
@@ -67,7 +70,8 @@ session.commit()
 
 item6 = Item(name = "JavaScript: Understanding the Weird Parts", 
     description = "An advanced JavaScript course for everyone! Scope, closures, prototypes, 'this', build your own framework, and more.", 
-    url = "https://www.udemy.com/understand-javascript/", price = "2899", rating = "4.7", category = category1)
+    url = "https://www.udemy.com/understand-javascript/", price = "2899", rating = "4.7", category = category1,
+    user_id = 2)
 
 session.add(item6)
 session.commit()
@@ -75,7 +79,8 @@ session.commit()
 
 item7 = Item(name = "The Complete Web Developer Course 2.0", 
     description = "Learn Web Development by building 25 websites and mobile apps using HTML, CSS, Javascript, PHP, Python, MySQL & more!", 
-    url = "https://www.udemy.com/the-complete-web-developer-course-2/", price = "3299", rating = "4.5", category = category1)
+    url = "https://www.udemy.com/the-complete-web-developer-course-2/", price = "3299", rating = "4.5", category = category1,
+    user_id = 2)
 
 session.add(item7)
 session.commit()
@@ -90,7 +95,8 @@ session.commit()
 
 item1 = Item(name = "The Complete Web Developer Course 2.0", 
     description = "Learn Web Development by building 25 websites and mobile apps using HTML, CSS, Javascript, PHP, Python, MySQL & more!", 
-    url = "https://www.udemy.com/the-complete-web-developer-course-2/", price = "3299", rating = "4.5", category = category2)
+    url = "https://www.udemy.com/the-complete-web-developer-course-2/", price = "3299", rating = "4.5", category = category2,
+    user_id = 1)
 
 session.add(item1)
 session.commit()
@@ -98,14 +104,16 @@ session.commit()
 
 item2 = Item(name = "Fullstack Advanced React and GraphQL", 
     description = "This is a course that will teach you everything you need to build a full stack application with React.js and GraphQL.", 
-    url = "https://advancedreact.com/", price = "8900",rating = "0", category = category2)
+    url = "https://advancedreact.com/", price = "8900",rating = "0", category = category2,
+    user_id = 1)
 
 session.add(item2)
 session.commit()
 
 item3 = Item(name = "JavaScript: Understanding the Weird Parts", 
     description = "An advanced JavaScript course for everyone! Scope, closures, prototypes, 'this', build your own framework, and more.", 
-    url = "https://www.udemy.com/understand-javascript/", price = "2899", rating = "4.7", category = category2)
+    url = "https://www.udemy.com/understand-javascript/", price = "2899", rating = "4.7", category = category2,
+    user_id = 1)
 
 session.add(item3)
 session.commit()
@@ -113,7 +121,8 @@ session.commit()
 
 item4 = Item(name = "The Complete Web Developer Course 2.0", 
     description = "Learn Web Development by building 25 websites and mobile apps using HTML, CSS, Javascript, PHP, Python, MySQL & more!", 
-    url = "https://www.udemy.com/the-complete-web-developer-course-2/", price = "3299", rating = "4.5", category = category2)
+    url = "https://www.udemy.com/the-complete-web-developer-course-2/", price = "3299", rating = "4.5", category = category2,
+    user_id = 1)
 
 session.add(item4)
 session.commit()
@@ -121,7 +130,8 @@ session.commit()
 
 item5 = Item(name = "Fullstack Advanced React and GraphQL", 
     description = "This is a course that will teach you everything you need to build a full stack application with React.js and GraphQL.", 
-    url = "https://advancedreact.com/", price = "8900",rating = "0", category = category2)
+    url = "https://advancedreact.com/", price = "8900",rating = "0", category = category2,
+    user_id = 1)
 
 session.add(item5)
 session.commit()
@@ -129,7 +139,8 @@ session.commit()
 
 item6 = Item(name = "JavaScript: Understanding the Weird Parts", 
     description = "An advanced JavaScript course for everyone! Scope, closures, prototypes, 'this', build your own framework, and more.", 
-    url = "https://www.udemy.com/understand-javascript/", price = "2899", rating = "4.7", category = category2)
+    url = "https://www.udemy.com/understand-javascript/", price = "2899", rating = "4.7", category = category2,
+    user_id = 1)
 
 session.add(item6)
 session.commit()
@@ -137,7 +148,8 @@ session.commit()
 
 item7 = Item(name = "The Complete Web Developer Course 2.0", 
     description = "Learn Web Development by building 25 websites and mobile apps using HTML, CSS, Javascript, PHP, Python, MySQL & more!", 
-    url = "https://www.udemy.com/the-complete-web-developer-course-2/", price = "3299", rating = "4.5", category = category2)
+    url = "https://www.udemy.com/the-complete-web-developer-course-2/", price = "3299", rating = "4.5", category = category2,
+    user_id = 1)
 
 session.add(item7)
 session.commit()
