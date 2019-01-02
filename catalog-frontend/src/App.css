@@ -1,22 +1,85 @@
+@import "~@blueprintjs/core/lib/css/blueprint.css";
+@import "~@blueprintjs/icons/lib/css/blueprint-icons.css";
+
 .App {
   text-align: center;
-}
-
-.App-logo {
-
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.App-Content {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  margin: 2.5%;
+}
+
+.App-Main-Container {
+  flex: 85%;
+  display: grid;
+  grid-template-columns: 20% 20% 20% 20%;
+  grid-template-rows: 33% 33% 33%;
+  grid-gap: 3.5% 3.5%;
+  margin-left: 3%;
+  place-content: center, center;
+
+}
+
+.App-Side-Menu {
+  flex: 15%;
+  display: flex;
+  background: #f7f7f7;
+  justify-content: center;
+  /* border: solid #aaa 1px; */
+  box-shadow: 0 0 .05rem #333;
+}
+
+.Main-Menu-Card {
+  display: flex;
+  flex-direction: column;
+}
+.Main-Menu-Card-Image-Container {
+  overflow: hidden; 
+}
+.Main-Menu-Card-Image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 2%
+}
+.subtitle {
+  color: #999;
+  margin-top: 2%
+}
+.title {
+  color: #444;
+}
+.active-rating {
+  color: #ecbb34;
+}
+.passive-rating {
+  color: #999;
+}
+.capitalize {
+  text-transform: capitalize;
+}
+.rating-text {
+  color: #999;
+  padding-left: 1% 
+}
+.left-allign {
+  text-align: left;
+}
+/* .right-allign {
+  text-align: right;
+} */
+.rating-container {
+  display: flex;  
+  justify-content: center;
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+.item-price-rating-container {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
 }
