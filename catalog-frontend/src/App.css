@@ -64,22 +64,28 @@
 }
 .rating-text {
   color: #999;
-  padding-left: 1% 
+  padding-left: 1.5%;
 }
 .left-allign {
   text-align: left;
 }
-/* .right-allign {
-  text-align: right;
-} */
 .rating-container {
-  display: flex;  
-  justify-content: center;
-  flex-direction: column;
-  flex-wrap: nowrap;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: row;
 }
 .item-price-rating-container {
   display: flex;
   justify-content: space-between;
   flex-direction: row;
+  align-items: baseline;
+}
+.item-user-container {
+  display: flex;
+  justify-content: flex-start;
+}
+.item-user-name {
+  color: #999;
+  margin-left: 1.5%;
 }

@@ -5,9 +5,7 @@ import { IconNames } from "@blueprintjs/icons"
 function Rating (props) {
   return (
     <div className="rating-container">
-      <div>
-        {renderRating(props.rating)}
-      </div>
+      {renderRating(props.rating)}
       <p className="rating-text">({props.rating ? props.rating : 0})</p>
     </div>
   )

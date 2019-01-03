@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Card, Elevation, Divider } from '@blueprintjs/core'
+import { Card, Elevation, Divider, Icon } from '@blueprintjs/core'
+import { IconNames } from "@blueprintjs/icons"
 import { Rating, Price } from './common';
 
 class MainMenu extends Component {
@@ -136,6 +137,10 @@ class MainMenu extends Component {
             <div className="item-price-rating-container">
               <Rating rating={item.rating} />
               <Price price={item.price} />
+            </div>
+            <div className="item-user-container">
+              <Icon style={{ color: '#999' }} icon={IconNames.USER}/>
+              <p className="item-user-name">{item.user_name}</p>
             </div>
           </Card>
         })}
