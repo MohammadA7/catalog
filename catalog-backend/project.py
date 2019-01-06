@@ -51,7 +51,7 @@ def login_with_google():
     # STEP 1 - Parse the auth code
     auth_code = request.json.get('auth_code')
 
-    print "Step 1 - Complete, received auth code %s" % auth_code
+    print("Step 1 - Complete, received auth code %s" % auth_code)
     # STEP 2 - Exchange for a token
 
     try:
@@ -93,7 +93,7 @@ def login_with_google():
         response.headers['Content-Type'] = 'application/json'
         return response
 
-    print "Step 2 Complete! Access Token : %s " % credentials.access_token
+    print("Step 2 Complete! Access Token : %s " % credentials.access_token)
 
     # STEP 3 - Find User or make a new one
     http = httplib2.Http()
@@ -193,13 +193,13 @@ def createItem(category):
         description = request.json.get('description')
         price = int(request.json.get('price')) * 100
         rating = request.json.get('rating')
-        url = request.json.get('url')
+        image_path = request.json.get('image_path')
         category_id = category
         item = Item(name=name,
                     description=description,
                     price=price,
                     rating=rating,
-                    url=url,
+                    image_path=image_path,
                     category_id=category_id,
                     user_id=g.user.id)
         session.add(item)
@@ -225,7 +225,7 @@ def editItem(category, item):
             description = request.json.get('description')
             price = request.json.get('price')
             rating = request.json.get('rating')
-            url = request.json.get('url')
+            image_path = request.json.get('image_path')
             category_id = category
 
             if id:
@@ -238,8 +238,8 @@ def editItem(category, item):
                 item.price = price
             if rating:
                 item.rating = rating
-            if url:
-                item.url = url
+            if image_path:
+                item.image_path = image_path
             if category_id:
                 item.category_id = category_id
 

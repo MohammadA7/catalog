@@ -3,7 +3,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
 from itsdangerous import(
-    TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
+    TimedJSONWebSignatureSerializer as Serializer, BadSignature,
+    SignatureExpired)
 from passlib.apps import custom_app_context as pwd_context
 import random
 import string
@@ -74,10 +75,10 @@ class Item(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
-    description = Column(String(400))
+    description = Column(String(2000))
     price = Column(Integer)
     rating = Column(Float(6))
-    url = Column(String(1000))
+    image_path = Column(String(2000))
     category_id = Column(Integer, ForeignKey('category.id'), nullable=False)
     category = relationship(Category)
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
@@ -91,7 +92,7 @@ class Item(Base):
             'description': self.description,
             'price': self.price,
             'rating': self.rating,
-            'url': self.url,
+            'image_path': self.image_path,
             'category_id': self.category_id,
             'user_id': self.user_id,
             'user_name': self.user.name,
