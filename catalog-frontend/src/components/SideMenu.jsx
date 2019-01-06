@@ -9,7 +9,7 @@ class SideMenu extends Component {
           <Tab id="ng" title="Angular" />
           <Tab id="mb" title="Ember" />
           <Tab id="rx" title="React" />
-          <Tab id="bb" disabled title="Backbone" />
+          <Tab id="bb" title="Backbone" />
           <Tabs.Expander />
         </Tabs>
       </div>
