@@ -11,10 +11,12 @@ class MainMenu extends Component {
     this.handleClick = this.handleClick.bind(this)
   }
   componentDidMount() {
-    axios.get(
-
-      
-    )
+    axios.get(process.env.REACT_APP_BACK_END_IP)
+    .then((response => {
+      console.log(response)
+      // this.setState({content: response})
+    }))
+    .catch(error => console.log(error))
   }
   handleClick(e) {
     console.log("Click!")

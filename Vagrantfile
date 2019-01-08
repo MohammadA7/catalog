@@ -6,6 +6,7 @@ Vagrant.configure("2") do |config|
   config.vm.box_version = "= 2.3.5"
   config.vm.synced_folder ".", "/vagrant"
   config.vm.network "forwarded_port", guest: 8000, host: 8000, host_ip: "127.0.0.1"
+  config.vm.network "forwarded_port", guest: 3000, host: 3000, host_ip: "127.0.0.1"
   config.vm.network "forwarded_port", guest: 8080, host: 8080, host_ip: "127.0.0.1"
   config.vm.network "forwarded_port", guest: 5000, host: 5000, host_ip: "127.0.0.1"
 
@@ -43,6 +44,13 @@ Vagrant.configure("2") do |config|
     vagrantTip="[35m[1mThe shared directory is located at /vagrant\\nTo access your shared files: cd /vagrant[m"
     echo -e $vagrantTip > /etc/motd
 
+    wget https://nodejs.org/dist/v10.15.0/node-v10.15.0-linux-x64.tar.xz
+    sudo mkdir /usr/local/lib/nodejs
+    tar xf node-v10.15.0-linux-x64.tar.xz -C /usr/local/lib/nodejs
+    sudo mv /usr/local/lib/nodejs/node-v10.15.0-linux-x64.tar.xz /usr/local/lib/nodejs/node-v10.15.0
+    sudo echo "export NODEJS_HOME=/usr/local/lib/nodejs/node-v10.15.0/bin export PATH=$NODEJS_HOME:$PATH" >> ~/.profile
+    . ~/.profile  
+    
     wget http://download.redis.io/redis-stable.tar.gz
     tar xvzf redis-stable.tar.gz
     cd redis-stable
@@ -50,5 +58,7 @@ Vagrant.configure("2") do |config|
     make install
 
     echo "Done installing your virtual machine!"
+    echo "node -v"
+    echo "npx -v"
   SHELL
 end
