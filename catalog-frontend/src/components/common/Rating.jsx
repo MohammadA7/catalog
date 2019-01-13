@@ -6,7 +6,7 @@ function Rating (props) {
   return (
     <div className="rating-container">
       {renderRating(props.rating)}
-      <p className="rating-text">({props.rating ? props.rating : 0})</p>
+      <p className="rating-text">({props.rating ? Number.parseFloat(props.rating).toPrecision(2) : 0})</p>
     </div>
   )
 }
@@ -15,9 +15,9 @@ function renderRating(rating) {
   let list = []
   for(let i = 0; i < 5; i++) {
     if(i < roundedRating) {
-      list.push(<Icon icon={IconNames.STAR} className="active-rating"></Icon>)
+      list.push(<Icon key={i} icon={IconNames.STAR} className="active-rating"></Icon>)
     } else {
-      list.push(<Icon icon={IconNames.STAR_EMPTY} className="passive-rating"></Icon>)
+      list.push(<Icon key={i} icon={IconNames.STAR_EMPTY} className="passive-rating"></Icon>)
     }
   }
   return list

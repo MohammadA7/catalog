@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Elevation, Divider, Icon } from '@blueprintjs/core'
+import { Card, Elevation, Divider, Icon, Text } from '@blueprintjs/core'
 import { IconNames } from "@blueprintjs/icons"
 import { Rating, Price } from './';
 
@@ -7,13 +7,14 @@ function Menu(props) {
   return (
     <div className="App-Main-Container">
         {props.content.map((item) => {
-          return <Card className="Main-Menu-Card" onclick={props.handleClick} interactive={true} elevation={Elevation.TWO}>
-            <div class="Main-Menu-Card-Image-Container">
-              <img className="Main-Menu-Card-Image" src={item.image} alt={item.name} />
+          return <Card key={item.id} className="Main-Menu-Card" onClick={props.handleClick} interactive={true} elevation={Elevation.TWO}>
+            <div className="Main-Menu-Card-Image-Container">
+              <img className="Main-Menu-Card-Image" src={item.image_path} alt={item.name} />
             </div>
             <Divider />
-            <strong className="capitalize left-allign title">{item.name}</strong>
-            <p className="capitalize left-allign subtitle">{item.name}</p>
+            <Text className="capitalize left-align title">{item.name}</Text>
+            <Text ellipsize={true} className="capitalize left-align subtitle">{item.description}</Text>
+            
             <div className="item-price-rating-container">
               <Rating rating={item.rating} />
               <Price price={item.price} />

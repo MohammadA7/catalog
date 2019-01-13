@@ -5,7 +5,7 @@ class NavigationBar extends Component {
   render() {
     return (
       <div>
-        <Navbar>
+        <Navbar fixedToTop>
           <Navbar.Group align={Alignment.LEFT}>
             <Navbar.Heading>Catalog</Navbar.Heading>
             <Navbar.Divider />
