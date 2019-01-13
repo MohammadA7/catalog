@@ -90,7 +90,7 @@ class Item(Base):
             'id': self.id,
             'name': self.name,
             'description': self.description,
-            'price': self.price,
+            'price': self.price / 100,
             'rating': self.rating,
             'image_path': self.image_path,
             'category_id': self.category_id,

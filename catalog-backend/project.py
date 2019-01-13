@@ -7,20 +7,21 @@ from modules import Base, User, Category, Item
 from flask_httpauth import HTTPBasicAuth
 from oauth2client.client import flow_from_clientsecrets, FlowExchangeError
 from ratelimit import get_view_rate_limit, on_over_limit, ratelimit
+from flask_cors import CORS
 import json
 import string
 import httplib2
 import random
 
 app = Flask(__name__)
+CORS(app)
 auth = HTTPBasicAuth()
-
 engine = create_engine('postgresql:///catalog')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
-CLIENT_ID = json.loads(open('client_secret.json', 'r').read())[
-    'web']['client_id']
+CLIENT_ID = json.loads(open('client_secret.json', 'r').read())['web']
+['client_id']
 
 
 @app.after_request
@@ -43,6 +44,17 @@ def catalogs():
         return jsonify([category.serialize for category in categories])
     else:
         return (jsonify({'data': 'No categories found', 'error': '204'}), 204)
+
+
+@app.route('/catalog/items/', methods=['GET'])
+@ratelimit(limit=30, per=60 * 1)
+def getItems():
+    items = session.query(Item).limit(20)
+    if items:
+        return jsonify([item.serialize for item in items])
+    else:
+        return (jsonify({'data': 'No items found',
+                         'error': '204'}), 204)
 
 
 @app.route('/gconnect')
@@ -166,12 +178,13 @@ def new_user():
 
 @app.route('/catalog/<category>/items/', methods=['GET'])
 @ratelimit(limit=30, per=60 * 1)
-def categoryid(category):
+def getItemsWithCategoryID(category):
     items = session.query(Item).filter_by(category_id=category).all()
-    if len(items):
+    if items:
         return jsonify([item.serialize for item in items])
     else:
-        return (jsonify({'data': 'No items found in this category', 'error': '204'}), 204)
+        return (jsonify({'data': 'No items found in this category',
+                         'error': '204'}), 204)
 
 
 @app.route('/catalog/<category>/<item>/', methods=['GET'])
@@ -181,7 +194,8 @@ def item(category, item):
     if item:
         return jsonify([item.serialize])
     else:
-        return (jsonify({'data': 'No item found with this id', 'error': '204'}), 204)
+        return (jsonify({'data': 'No item found with this id',
+                         'error': '204'}), 204)
 
 
 @app.route('/catalog/<category>/create/', methods=['POST'])
@@ -244,11 +258,13 @@ def editItem(category, item):
                 item.category_id = category_id
 
             session.commit()
-            return (jsonify({'data': 'Item has been successfully updated'}), 200)
+            return (jsonify({'data': 'Item has been successfully updated'}),
+                    200)
         else:
             return (jsonify({'data': 'Unauthorized access'}), 401)
     else:
-        return (jsonify({'data': 'No item found with this id', 'error': '204'}), 204)
+        return (jsonify({'data': 'No item found with this id',
+                         'error': '204'}), 204)
 
 
 @app.route('/catalog/<category>/<item>/', methods=['DELETE'])
@@ -261,11 +277,13 @@ def deleteItem(category, item):
         if g.user.id == item.user.id:
             item.delete()
             session.commit()
-            return jsonify((jsonify({'data': 'Item has been successfully deleted'}), 200))
+            return (jsonify({'data': 'Item has been successfully deleted'}),
+                    200)
         else:
             return (jsonify({'data': 'Unauthorized access'}), 401)
     else:
-        return (jsonify({'data': 'No item found with this id', 'error': '204'}), 204)
+        return (jsonify({'data': 'No item found with this id',
+                         'error': '204'}), 204)
 
 
 if __name__ == '__main__':
