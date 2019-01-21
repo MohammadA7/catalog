@@ -1,22 +1,15 @@
 import React, { Component } from 'react'
 import { Tabs, H3 , Tab } from '@blueprintjs/core'
+import { Link } from 'react-router-dom'
+
 
 class SideMenu extends Component {
-  constructor(props) {
-    super(props)
-    this.handleTabChange = this.handleTabChange.bind(this)
-  }
-
-  handleTabChange(id) {
-    this.props.onSelectedCatagoryChange(id)
-  }
-
   render() {
     return (
       <div className="App-Side-Menu">
         <H3>Catagories</H3>
-        <Tabs vertical="true" large onChange={this.handleTabChange} selectedTabId={this.props.selectedCatagory}>
-          {this.props.content.map(item => <Tab key={item.id} id={item.id} title={item.name} />)}
+        <Tabs vertical="true" large selectedTabId={this.props.selectedCatagory}>
+          {this.props.content.map(item => <Tab key={item.id} id={item.id} title={<Link to={`/${item.id}`}>{item.name}</Link>} />)}
           <Tabs.Expander />
         </Tabs>
       </div>
