@@ -37,7 +37,7 @@ def inject_x_rate_headers(response):
 
 @app.route('/', methods=['GET'])
 @app.route('/catalog/',  methods=['GET'])
-@ratelimit(limit=60, per=60 * 1)
+@ratelimit(limit=120, per=60 * 1)
 def catalogs():
     categories = session.query(Category).all()
     if len(categories):
@@ -47,9 +47,9 @@ def catalogs():
 
 
 @app.route('/catalog/items/', methods=['GET'])
-@ratelimit(limit=60, per=60 * 1)
+@ratelimit(limit=120, per=60 * 1)
 def getItems():
-    items = session.query(Item).limit(20)
+    items = session.query(Item).order_by(Item.time_created.desc()).limit(20)
     if items:
         return jsonify([item.serialize for item in items])
     else:
@@ -58,7 +58,7 @@ def getItems():
 
 
 @app.route('/gconnect')
-@ratelimit(limit=60, per=60 * 1)
+@ratelimit(limit=120, per=60 * 1)
 def login_with_google():
     # STEP 1 - Parse the auth code
     auth_code = request.json.get('auth_code')
@@ -148,7 +148,7 @@ def verify_password(username_or_token, password):
 
 
 @app.route('/token')
-@ratelimit(limit=60, per=60 * 1)
+@ratelimit(limit=120, per=60 * 1)
 @auth.login_required
 def get_auth_token():
     token = g.user.generate_auth_token()
@@ -156,7 +156,7 @@ def get_auth_token():
 
 
 @app.route('/register', methods=['POST'])
-@ratelimit(limit=60, per=60 * 1)
+@ratelimit(limit=120, per=60 * 1)
 def new_user():
     name = request.json.get('username').lower()
     password = request.json.get('password')
@@ -177,7 +177,7 @@ def new_user():
 
 
 @app.route('/catalog/<category>/items/', methods=['GET'])
-@ratelimit(limit=60, per=60 * 1)
+@ratelimit(limit=120, per=60 * 1)
 def getItemsWithCategoryID(category):
     items = session.query(Item).filter_by(category_id=category).all()
     if items:
@@ -188,7 +188,7 @@ def getItemsWithCategoryID(category):
 
 
 @app.route('/catalog/<category>/<item>/', methods=['GET'])
-@ratelimit(limit=60, per=60 * 1)
+@ratelimit(limit=120, per=60 * 1)
 def item(category, item):
     item = session.query(Item).filter_by(category_id=category, id=item).first()
     if item:
@@ -199,7 +199,7 @@ def item(category, item):
 
 
 @app.route('/catalog/<category>/create/', methods=['POST'])
-@ratelimit(limit=60, per=60 * 1)
+@ratelimit(limit=120, per=60 * 1)
 @auth.login_required
 def createItem(category):
     try:
@@ -227,7 +227,7 @@ def createItem(category):
 
 
 @app.route('/catalog/<category>/<item>/', methods=['PUT'])
-@ratelimit(limit=60, per=60 * 1)
+@ratelimit(limit=120, per=60 * 1)
 @auth.login_required
 def editItem(category, item):
     item = session.query(Item).filter_by(category_id=category, id=item).one()
@@ -268,7 +268,7 @@ def editItem(category, item):
 
 
 @app.route('/catalog/<category>/<item>/', methods=['DELETE'])
-@ratelimit(limit=60, per=60 * 1)
+@ratelimit(limit=120, per=60 * 1)
 @auth.login_required
 def deleteItem(category, item):
     item = session.query(Item).filter_by(category_id=category, id=item).one()
