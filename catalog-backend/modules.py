@@ -1,7 +1,8 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, Float
+from sqlalchemy import Column, ForeignKey, Integer, String, Float, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
+from sqlalchemy.sql import func
 from itsdangerous import(
     TimedJSONWebSignatureSerializer as Serializer, BadSignature,
     SignatureExpired)
@@ -22,7 +23,9 @@ class User(Base):
     name = Column(String(80), nullable=False)
     email = Column(String(250))
     password_hash = Column(String(250))
-
+    time_created = Column(DateTime(timezone=True), server_default=func.now())
+    time_updated = Column(DateTime(timezone=True), onupdate=func.now())
+    
     def hash_password(self, password):
         self.password_hash = pwd_context.encrypt(password)
 
@@ -61,7 +64,9 @@ class Category(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
-
+    time_created = Column(DateTime(timezone=True), server_default=func.now())
+    time_updated = Column(DateTime(timezone=True), onupdate=func.now())
+    
     @property
     def serialize(self):
         return {
@@ -83,6 +88,8 @@ class Item(Base):
     category = relationship(Category)
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     user = relationship(User)
+    time_created = Column(DateTime(timezone=True), server_default=func.now())
+    time_updated = Column(DateTime(timezone=True), onupdate=func.now())
 
     @property
     def serialize(self):
