@@ -6,31 +6,47 @@ class Content extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      content: []
+      content: [],
+      isMounted: false
     }
     this.handleClick = this.handleClick.bind(this)
   }
-  componentDidUpdate() {
-    this.getContet(this.props.selectedCatagory)
-    .then((response => {
-      this.setState({
-        content: response.data,
-      })}
-    ))
-    .catch(error => console.log(error))
+  componentDidUpdate(prevProps) {
+    if (prevProps.selectedCatagory !== this.props.selectedCatagory) {
+      this.getContet(this.props.selectedCatagory)
+        .then((response => {
+          if (this.state.isMounted) {
+            this.setState({
+              content: response.data,
+            })
+          }
+        }
+        ))
+        .catch(error => console.log(error))
+    }
   }
 
-  // componentDidMount() {
-  //   let newContent = this.getContet(this.props.selectedCatagory)
-  //   if(newContent) { 
-  //     this.setState({
-  //       content: newContent,
-  //     })}
-  // }
+  componentDidMount() {
+    this.setState({ isMounted: true })
+    this.getContet(this.props.selectedCatagory)
+      .then((response => {
+        if (this.state.isMounted) {
+          this.setState({
+            content: response.data,
+          })
+        }
+      }
+      ))
+      .catch(error => console.log(error))
+  }
+
+  componentWillMount() {
+    this.setState({ isMounted: false })
+  }
 
   getContet(selectedCatagory) {
     let URL;
-    if(selectedCatagory )
+    if (selectedCatagory)
       URL = `http://${process.env.REACT_APP_BACK_END_IP}/catalog/${selectedCatagory}/items/`
     else
       URL = `http://${process.env.REACT_APP_BACK_END_IP}/catalog/items/`
@@ -45,7 +61,7 @@ class Content extends Component {
   render() {
     return (
       <div>
-         <Menu content={this.state.content} handleClick={this.handleClick}/>
+        <Menu content={this.state.content} handleClick={this.handleClick} />
       </div>
     )
   }
