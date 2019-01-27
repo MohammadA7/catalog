@@ -9,8 +9,8 @@ function Menu(props) {
   return (
     <div className="App-Main-Container">
       {props.content.map((item) => {
-        return <Link to={`/${item.category_id}/${item.id}`}>
-          <Card key={item.id} className="Main-Menu-Card" onClick={props.handleClick} interactive={true} elevation={Elevation.TWO}>
+        return <Link key={item.id} to={`/${item.category_id}/${item.id}`}>
+          <Card className="Main-Menu-Card" onClick={props.handleClick} interactive={true} elevation={Elevation.TWO}>
             <div className="Main-Menu-Card-Image-Container">
               <img className="Main-Menu-Card-Image" src={item.image_path} alt={item.name} />
             </div>
