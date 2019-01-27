@@ -152,7 +152,10 @@ def verify_password(username_or_token, password):
 @auth.login_required
 def get_auth_token():
     token = g.user.generate_auth_token()
-    return jsonify({'token': token.decode('ascii')})
+    return jsonify({
+        'token': token.decode('ascii'),
+        'username': g.user.name
+    })
 
 
 @app.route('/register', methods=['POST'])
@@ -164,7 +167,6 @@ def new_user():
     if name is None or password is None or email is None:
         return (jsonify({'data': 'Missing values', 'error': '400'}), 400)
 
-    existing_user = session.query(User).filter_by(name=name).first()
     existing_email = session.query(User).filter_by(email=email).first()
     if existing_user is not None or existing_email is not None:
         return (jsonify({'data': 'user already exists'}), 200)
