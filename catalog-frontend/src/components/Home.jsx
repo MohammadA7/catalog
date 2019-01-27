@@ -27,7 +27,7 @@ class Home extends Component {
   }
   renderBreadcrumb() {
     let initalValue = [{ href: "/", text: <h2>Home</h2> }]
-    let path = ""
+    let path = ''
     let params = Object.entries(this.props.match.params)
     let breadcrumbs = params.reduce((accumulator, currentValue) => {
       if (currentValue[1]) {
@@ -52,7 +52,7 @@ class Home extends Component {
           selectedCatagory={this.props.match.params.catagory}
           onSelectedCatagoryChange={this.handleCatagoryChange} />
         <div className="App-Content">
-          <div style={{ 'margin-left': '2.5%' }}>
+          <div style={{ marginLeft: '2.5%' }}>
             <Breadcrumbs
               currentBreadcrumbRenderer={this.renderCurrentBreadcrumb}
               items={this.renderBreadcrumb()} />

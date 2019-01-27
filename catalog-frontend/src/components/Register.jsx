@@ -1,12 +1,16 @@
 import React, { Component } from 'react'
+import { Redirect } from 'react-router-dom'
 
 class Register extends Component {
   render() {
-    return (
-      <div>
-        Register
-      </div>
-    )
+    if (this.props.isLoggedIn)
+      return <Redirect to='/' />
+    else
+      return (
+        <div>
+          Register
+        </div>
+      )
   }
 }
 
