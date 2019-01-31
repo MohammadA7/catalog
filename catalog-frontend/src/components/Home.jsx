@@ -69,7 +69,7 @@ class Home extends Component {
 
           <Switch>
             <Route path="/:category/create" render={() => {
-              return <ItemDetails selectedCategoryName={ this.state.content ? this.state.content[category].name : '' } selectedCategory={category}
+              return <ItemDetails selectedCategoryName={ this.state.content[category] ? this.state.content[category].name : '' } selectedCategory={category}
                 editingMode={false} token={this.props.token} />
             }} />
              <Route path="/:category/:item" render={() => {

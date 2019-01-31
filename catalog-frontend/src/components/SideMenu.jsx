@@ -9,7 +9,7 @@ class SideMenu extends Component {
       <div className="App-Side-Menu">
         <H3>Categories</H3>
         <Tabs vertical="true" large selectedTabId={this.props.selectedCategory}>
-          {this.props.content.map(item => <Tab key={item.id} id={item.id} title={<Link to={`/${item.id}`}>{item.name}</Link>} />)}
+          {this.props.content ? this.props.content.map(item => <Tab key={item.id} id={item.id} title={<Link to={`/${item.id}`}>{item.name}</Link>} />): ''}
           <Tabs.Expander />
         </Tabs>
       </div>

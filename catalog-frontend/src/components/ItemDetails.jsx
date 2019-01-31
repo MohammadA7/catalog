@@ -48,7 +48,7 @@ class ItemDetails extends Component {
         }
         ))
         .catch(error => {
-          if (error.response)
+          if (error.response.data)
             AppToaster.show({
               message: error.response.data,
               intent: 'danger',
@@ -114,7 +114,7 @@ class ItemDetails extends Component {
       .catch(error => {
         console.log(error)
         AppToaster.show({
-          message: error.response ? error.response.data : error.message,
+          message: error.response.data.data ? error.response.data.data : error.message,
           intent: 'danger',
           icon: 'error'
         })
