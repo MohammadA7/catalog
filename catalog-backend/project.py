@@ -229,7 +229,7 @@ def createItem(category):
                     rating=rating,
                     image_path=image_path,
                     category_id=category_id,
-                    user_id=2)
+                    user_id=g.user.id)
         session.add(item)
         session.commit()
         return (jsonify({'data': 'Item has been created'}), 200)
