@@ -30,10 +30,11 @@ for _ in range(3):
     users.append(user)
 
 images = [
-    "https://yt3.ggpht.com/a-/AAuE7mANQu0Jqo92dvIUUTie-5QqGlTKYK7M15bxwg=s900-mo-c-c0xffffffff-rj-k-no",
-    "https://reason.org/wp-content/uploads/2018/01/guybentley.jpg",
-    "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Official_portrait_of_Mr_John_Whittingdale_crop_2.jpg/1200px-Official_portrait_of_Mr_John_Whittingdale_crop_2.jpg"]
-
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png",
+    "http://flask.pocoo.org/docs/1.0/_static/flask.png",
+    "https://redislabs.com/wp-content/themes/redislabs/assets/images/redis-logo-stack.png",
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Postgresql_elephant.svg/1200px-Postgresql_elephant.svg.png"
+]
 for _ in range(10):
     category = Category(name=fake.company())
     session.add(category)
@@ -42,7 +43,7 @@ for _ in range(10):
         item = Item(
             name=fake.name(),
             description=fake.text(),
-            image_path=images[random.randint(0, 2)],
+            image_path=images[random.randint(0, len(images))],
             price=random.randint(0, 99999),
             rating=random.uniform(0, 5.0),
             category=category,
