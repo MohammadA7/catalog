@@ -102,6 +102,7 @@ class Item(Base):
             'rating': self.rating,
             'image_path': self.image_path,
             'category_id': self.category_id,
+            'category_name': self.category.name,
             'user_id': self.user_id,
             'user_name': self.user.name,
         }
