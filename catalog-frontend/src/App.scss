@@ -29,7 +29,8 @@ body {
 }
 
 .App-Footer {
-  flex: 1;
+  flex: 20%;
+  justify-content: center;
   // background: #20232a;
   background-color: rgb(40, 44, 52);
 }
@@ -74,14 +75,6 @@ body {
 .title {
   color: #444;
   flex-grow: .5;  
-}
-
-.active-rating {
-  color: #ecbb34;
-}
-
-.passive-rating {
-  color: #999;
 }
 
 .capitalize {

@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import './App.scss';
 import { Route, Switch } from "react-router-dom"
-import { Home, Register, Login, NavigationBar } from './components'
-import axios from 'axios'
+import { Home, Register, Login, NavigationBar, AppToaster } from './components'
 
 class App extends Component {
   constructor(props) {
@@ -12,35 +11,43 @@ class App extends Component {
       token: '',
     }
     this.onLoginSuccess = this.onLoginSuccess.bind(this)
+    this.onLogout = this.onLogout.bind(this)
   }
 
   onLoginSuccess(token) {
     this.setState({
       isLoggedIn: true,
-      token: token
-    })
-  }
-  onLogout() {
-    axios.get()
-    this.setState({
-      isLoggedIn: false,
-      token: ''
+      token,
     })
   }
 
+  onLogout() {
+    if (this.state.isLoggedIn) {
+      this.setState({
+        isLoggedIn: false,
+        token: ''
+      })
+      AppToaster.show({
+        message: "Goodbye, old friend.",
+        intent: 'warning',
+        icon: 'hand'
+      })
+    }
+  }
+
   render() {
+    const { isLoggedIn, token } = this.state
     return (
       <div>
-        <NavigationBar isLoggedIn={this.state.isLoggedIn} />
+        <NavigationBar isLoggedIn={isLoggedIn} onLogout={this.onLogout}/>
         <Switch>
           <Route exact path={"/login"} render={() => <Login
-            isLoggedIn={this.state.isLoggedIn}
+            isLoggedIn={isLoggedIn}
             onLoginSuccess={this.onLoginSuccess} />} />
-          <Route exact path={"/logout"} render={() => this.onLogout()} />
           <Route exact path={"/register"} render={() => <Register
-            isLoggedIn={this.state.isLoggedIn} />} />
-          <Route path={"/:catagory?/:item?"} render={({ match }) => {
-            return <Home isLoggedIn={this.state.isLoggedIn} match={match} className="App-Main-Container" />
+            isLoggedIn={isLoggedIn} />} />
+          <Route path={"/:category?/:item?"} render={({ match }) => {
+            return <Home token={token} isLoggedIn={isLoggedIn} match={match} className="App-Main-Container" />
           }} />
         </Switch>
       </div>

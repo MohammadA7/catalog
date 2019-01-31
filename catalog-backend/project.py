@@ -1,27 +1,32 @@
 #!/usr/bin/python3
 from flask import Flask, jsonify, request, g, make_response
+from flask_httpauth import HTTPBasicAuth
+from flask import session as login_session
+from flask_cors import CORS
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
 from modules import Base, User, Category, Item
-from flask_httpauth import HTTPBasicAuth
+
 from oauth2client.client import flow_from_clientsecrets, FlowExchangeError
 from ratelimit import get_view_rate_limit, on_over_limit, ratelimit
-from flask_cors import CORS
+
 import json
 import string
 import httplib2
 import random
+import requests
 
 app = Flask(__name__)
-CORS(app)
 auth = HTTPBasicAuth()
+CORS(app, resources={r"/*": {"origins": "*"}})
 engine = create_engine('postgresql:///catalog')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
-CLIENT_ID = json.loads(open('client_secret.json', 'r').read())['web']
-['client_id']
+CLIENT_ID = json.loads(
+        open('client_secret.json', 'r').read())['web']['client_id']
 
 
 @app.after_request
@@ -35,7 +40,6 @@ def inject_x_rate_headers(response):
     return response
 
 
-@app.route('/', methods=['GET'])
 @app.route('/catalog/',  methods=['GET'])
 @ratelimit(limit=120, per=60 * 1)
 def catalogs():
@@ -57,7 +61,7 @@ def getItems():
                          'error': '204'}), 204)
 
 
-@app.route('/gconnect')
+@app.route('/gconnect', methods=['POST'])
 @ratelimit(limit=120, per=60 * 1)
 def login_with_google():
     # STEP 1 - Parse the auth code
@@ -67,11 +71,13 @@ def login_with_google():
     # STEP 2 - Exchange for a token
 
     try:
-        oauth_flow = flow_from_clientsecrets('client_secret.json', scope='')
+        oauth_flow = flow_from_clientsecrets(filename='client_secret.json',
+                                             scope='')
         oauth_flow.redirect_uri = 'postmessage'
-        credentials = oauth_flow.step2_echange(auth_code)
+        credentials = oauth_flow.step2_exchange(auth_code)
 
     except FlowExchangeError:
+        print(FlowExchangeError.__dict__)
         return (jsonify({'data': 'Failed to upgrade the authorization code.', 'error': 401}), 401)
 
     access_token = credentials.access_token
@@ -97,8 +103,10 @@ def login_with_google():
             "Token's client ID does not match app's."), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
+    
     stored_credentials = login_session.get('credentials')
     stored_gplus_id = login_session.get('gplus_id')
+
     if stored_credentials is not None and gplus_id == stored_gplus_id:
         response = make_response(json.dumps(
             'Current user is already connected.'), 200)
@@ -112,7 +120,11 @@ def login_with_google():
     userinfo_url = "https://www.googleapis.com/oauth2/v1/userinfo"
     params = {'access_token': credentials.access_token, 'alt': 'json'}
     answer = requests.get(userinfo_url, params=params)
-
+    
+    # Store the access token in the session for later use.
+    login_session['access_token'] = credentials.access_token
+    login_session['gplus_id'] = gplus_id
+    
     data = answer.json()
 
     name = data['name']
@@ -194,7 +206,7 @@ def getItemsWithCategoryID(category):
 def item(category, item):
     item = session.query(Item).filter_by(category_id=category, id=item).first()
     if item:
-        return jsonify([item.serialize])
+        return jsonify(item.serialize)
     else:
         return (jsonify({'data': 'No item found with this id',
                          'error': '204'}), 204)
@@ -217,7 +229,7 @@ def createItem(category):
                     rating=rating,
                     image_path=image_path,
                     category_id=category_id,
-                    user_id=g.user.id)
+                    user_id=2)
         session.add(item)
         session.commit()
         return (jsonify({'data': 'Item has been created'}), 200)
@@ -228,7 +240,7 @@ def createItem(category):
                          }), 202)
 
 
-@app.route('/catalog/<category>/<item>/', methods=['PUT'])
+@app.route('/catalog/<category>/<item>/', methods=['POST'])
 @ratelimit(limit=120, per=60 * 1)
 @auth.login_required
 def editItem(category, item):
@@ -236,16 +248,12 @@ def editItem(category, item):
 
     if item:
         if g.user.id == item.user.id:
-            id = item
             name = request.json.get('name')
             description = request.json.get('description')
             price = request.json.get('price')
             rating = request.json.get('rating')
             image_path = request.json.get('image_path')
             category_id = category
-
-            if id:
-                item.id = id
             if name:
                 item.name = name
             if description:

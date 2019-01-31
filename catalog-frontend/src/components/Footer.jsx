@@ -4,7 +4,7 @@ class Footer extends Component {
   render() {
     return (
       <div  className="App-Footer">
-        Footer
+        <h2 style={{color: '#FFF' }}>Footer</h2>
       </div>
     )
   }

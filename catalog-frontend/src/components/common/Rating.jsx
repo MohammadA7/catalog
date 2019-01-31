@@ -15,9 +15,9 @@ function renderRating(rating) {
   let list = []
   for(let i = 0; i < 5; i++) {
     if(i < roundedRating) {
-      list.push(<Icon key={i} icon={IconNames.STAR} className="active-rating"></Icon>)
+      list.push(<Icon key={i} icon={IconNames.STAR} style={{ color: '#ecbb34'}}></Icon>)
     } else {
-      list.push(<Icon key={i} icon={IconNames.STAR_EMPTY} className="passive-rating"></Icon>)
+      list.push(<Icon key={i} icon={IconNames.STAR_EMPTY} style={{ color: '#999'}}></Icon>)
     }
   }
   return list

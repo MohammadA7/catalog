@@ -6,3 +6,4 @@ export { Home } from './Home.jsx';
 export { Login } from './Login.jsx';
 export { Register } from './Register.jsx';
 export { ItemDetails } from './ItemDetails.jsx';
+export { AppToaster } from './toaster.js';

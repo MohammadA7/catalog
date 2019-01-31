@@ -18,9 +18,8 @@ class NavigationBar extends Component {
           <Navbar.Group align={Alignment.RIGHT}>
             {
               this.props.isLoggedIn ?
-                <Link to="/logout">
-                  <Button className="bp3-minimal" icon="log-out" text="Logout" />
-                </Link>
+                <Button className="bp3-minimal" icon="log-out" text="Logout" 
+                  onClick={this.props.onLogout}/>
                 :
                 <div>
                   <Link to="/login">

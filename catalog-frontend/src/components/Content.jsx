@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Menu } from './common'
 import axios from 'axios'
+import { AppToaster } from './'
 
 class Content extends Component {
   constructor(props) {
@@ -9,11 +10,11 @@ class Content extends Component {
       content: [],
       isMounted: false
     }
-    this.handleClick = this.handleClick.bind(this)
   }
+
   componentDidUpdate(prevProps) {
-    if (prevProps.selectedCatagory !== this.props.selectedCatagory) {
-      this.getContet(this.props.selectedCatagory)
+    if (prevProps.selectedCategory !== this.props.selectedCategory) {
+      this.getContet(this.props.selectedCategory)
         .then((response => {
           if (this.state.isMounted) {
             this.setState({
@@ -22,13 +23,20 @@ class Content extends Component {
           }
         }
         ))
-        .catch(error => console.log(error))
+        .catch(error => {
+          if (error.response)
+          AppToaster.show({
+            message: error.response.data,
+            intent: 'danger',
+            icon: 'error'
+          })
+        })
     }
   }
 
   componentDidMount() {
     this.setState({ isMounted: true })
-    this.getContet(this.props.selectedCatagory)
+    this.getContet(this.props.selectedCategory)
       .then((response => {
         if (this.state.isMounted) {
           this.setState({
@@ -37,31 +45,34 @@ class Content extends Component {
         }
       }
       ))
-      .catch(error => console.log(error))
+      .catch(error => {
+        if (error.response)
+          AppToaster.show({
+            message: error.response.data,
+            intent: 'danger',
+            icon: 'error'
+          })
+      })
   }
 
   componentWillMount() {
     this.setState({ isMounted: false })
   }
 
-  getContet(selectedCatagory) {
+  getContet(selectedCategory) {
     let URL;
-    if (selectedCatagory)
-      URL = `http://${process.env.REACT_APP_BACK_END_IP}/catalog/${selectedCatagory}/items/`
+    if (selectedCategory)
+      URL = `http://${process.env.REACT_APP_BACK_END_IP}/catalog/${selectedCategory}/items/`
     else
       URL = `http://${process.env.REACT_APP_BACK_END_IP}/catalog/items/`
 
     return axios.get(URL)
   }
 
-  handleClick(e) {
-    console.log("Click!")
-  }
-
   render() {
     return (
       <div>
-        <Menu content={this.state.content} handleClick={this.handleClick} />
+        <Menu content={this.state.content} />
       </div>
     )
   }

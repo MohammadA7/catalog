@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Content, SideMenu, Footer, ItemDetails } from './'
+import { Content, SideMenu, Footer, ItemDetails, AppToaster } from './'
 import axios from 'axios'
-import { Route, Switch } from 'react-router-dom'
-import { Breadcrumbs, Breadcrumb } from '@blueprintjs/core'
+import { Route, Switch, Link } from 'react-router-dom'
+import { Breadcrumbs, Breadcrumb, Button } from '@blueprintjs/core'
 
 class Home extends Component {
   constructor(props) {
@@ -14,26 +14,34 @@ class Home extends Component {
 
 
   componentDidMount() {
-    axios.get(`http://${process.env.REACT_APP_BACK_END_IP}/`)
+    axios.get(`http://${process.env.REACT_APP_BACK_END_IP}/catalog`)
       .then((response => {
         this.setState({
           content: response.data
         })
       }))
-      .catch(error => console.log(error))
+      .catch(error => {
+        if (error.response)
+          AppToaster.show({
+            message: error.response.data,
+            intent: 'danger',
+            icon: 'error'
+          })
+      })
   }
+
   renderCurrentBreadcrumb = ({ text, ...restProps }) => {
-    return <Breadcrumb className="bold capitalize" {...restProps}>{text}</Breadcrumb>;
+    return <Breadcrumb {...restProps}>{text}</Breadcrumb>;
   }
+
   renderBreadcrumb() {
-    let initalValue = [{ href: "/", text: <h2>Home</h2> }]
+    let initalValue = [{ intent: 'error', text: <Link to="/"><h3>Home</h3></Link> }]
     let path = ''
     let params = Object.entries(this.props.match.params)
     let breadcrumbs = params.reduce((accumulator, currentValue) => {
       if (currentValue[1]) {
         accumulator.push({
-          href: `${path}/${currentValue[1]}`,
-          text: <h2>{currentValue[0].replace(/^\w/, c => c.toUpperCase())}</h2>,
+          text: <Link to={`${path}/${currentValue[1]}`}><h3>{currentValue[0].replace(/^\w/, c => c.toUpperCase())}</h3></Link>,
           icon: 'chevron-right'
         })
         path = `${path}/${currentValue[1]}`
@@ -43,25 +51,33 @@ class Home extends Component {
     return breadcrumbs
   }
 
-
   render() {
+    const { category, item } = this.props.match.params
     return (
       <div className="App">
         <SideMenu className="App-Side-Menu"
           content={this.state.content}
-          selectedCatagory={this.props.match.params.catagory}
-          onSelectedCatagoryChange={this.handleCatagoryChange} />
+          selectedCategory={category}
+          onSelectedCategoryChange={this.handleCategoryChange} />
         <div className="App-Content">
-          <div style={{ marginLeft: '2.5%' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '2%' }}>
             <Breadcrumbs
               currentBreadcrumbRenderer={this.renderCurrentBreadcrumb}
               items={this.renderBreadcrumb()} />
+              <Link to={`/${category}/create`}><Button disabled={!category} icon="add" intent="primary">Create Item</Button></Link>
           </div>
 
           <Switch>
-            <Route path="/:catagory/:item" component={ItemDetails} />
-            <Route path={"/:catagory"} render={({ match }) => {
-              return <Content selectedCatagory={this.props.match.params.catagory}
+            <Route path="/:category/create" render={() => {
+              return <ItemDetails selectedCategoryName={ this.state.content ? this.state.content[category].name : '' } selectedCategory={category}
+                editingMode={false} token={this.props.token} />
+            }} />
+             <Route path="/:category/:item" render={() => {
+              return <ItemDetails selectedCategory={category}
+                selectedItem={item} editingMode={true} token={this.props.token} />
+            }} />
+            <Route path={"/:category"} render={({ match }) => {
+              return <Content selectedCategory={category}
                 match={match} className="App-Main-Container" />
             }} />
             <Route path={"/"} render={({ match }) => {
