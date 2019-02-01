@@ -26,7 +26,7 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 CLIENT_ID = json.loads(
-        open('client_secret.json', 'r').read())['web']['client_id']
+    open('client_secret.json', 'r').read())['web']['client_id']
 
 
 @app.after_request
@@ -78,7 +78,8 @@ def login_with_google():
 
     except FlowExchangeError:
         print(FlowExchangeError.__dict__)
-        return (jsonify({'data': 'Failed to upgrade the authorization code.', 'error': 401}), 401)
+        return (jsonify({'data': 'Failed to upgrade the authorization code.',
+                         'error': 401}), 401)
 
     access_token = credentials.access_token
     url = 'https://www.googleapis.com/oauth2/v1/tokeninfo?access_token={}'.format(
@@ -103,7 +104,7 @@ def login_with_google():
             "Token's client ID does not match app's."), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
-    
+        
     stored_credentials = login_session.get('credentials')
     stored_gplus_id = login_session.get('gplus_id')
 
@@ -120,11 +121,11 @@ def login_with_google():
     userinfo_url = "https://www.googleapis.com/oauth2/v1/userinfo"
     params = {'access_token': credentials.access_token, 'alt': 'json'}
     answer = requests.get(userinfo_url, params=params)
-    
+
     # Store the access token in the session for later use.
     login_session['access_token'] = credentials.access_token
     login_session['gplus_id'] = gplus_id
-    
+
     data = answer.json()
 
     name = data['name']
@@ -180,7 +181,7 @@ def new_user():
         return (jsonify({'data': 'Missing values', 'error': '400'}), 400)
 
     existing_email = session.query(User).filter_by(email=email).first()
-    if existing_user is not None or existing_email is not None:
+    if existing_email is not None:
         return (jsonify({'data': 'user already exists'}), 200)
 
     user = User(name=name, email=email)

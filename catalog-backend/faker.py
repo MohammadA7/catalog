@@ -43,7 +43,7 @@ for _ in range(10):
         item = Item(
             name=fake.name(),
             description=fake.text(),
-            image_path=images[random.randint(0, len(images))],
+            image_path=images[random.randint(0, len(images)-1)],
             price=random.randint(0, 99999),
             rating=random.uniform(0, 5.0),
             category=category,
