@@ -115,7 +115,7 @@ class Login extends Component {
               accessType="offline"
               onSuccess={this.onGoogleSignInSuccess}
               onFailure={this.onGoogleSignInFailure}
-              clientId="300970279150-og2ou2hij38hb4lvqk0v0akngm5uj206.apps.googleusercontent.com" />
+              clientId={process.env.REACT_APP_GOOGLE_CLINET_ID} />
 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div style={{ width: '42%', height: '1px', background: '#ccc' }} />
