@@ -26,7 +26,7 @@ This project is a web application that populates categories and their items, as 
 * Cd to `/vagrant/catalog-backend`
 * If you want to generate fake data run `python faker.py`
 
-***before you can run the backend you have to provide the client_secret.json for google OAuth
+**Note that before you can run the backend you have to provide the client_secret.json for google OAuth**
 
 ### Using Google OAuth Login
 
