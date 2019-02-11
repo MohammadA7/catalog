@@ -17,6 +17,7 @@ import string
 import httplib2
 import random
 import requests
+import os
 
 app = Flask(__name__)
 auth = HTTPBasicAuth()
@@ -25,8 +26,8 @@ engine = create_engine('postgresql:///catalog')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
-CLIENT_ID = json.loads(
-    open('client_secret.json', 'r').read())['web']['client_id']
+
+CLIENT_ID = json.loads(open("{}/client_secret.json".format(os.path.dirname(os.path.realpath(__file__))), 'r').read())['web']['client_id']
 
 
 @app.after_request
@@ -220,7 +221,7 @@ def createItem(category):
     try:
         name = request.json.get('name')
         description = request.json.get('description')
-        price = int(request.json.get('price')) * 100
+        price = float(request.json.get('price')) * 100
         rating = request.json.get('rating')
         image_path = request.json.get('image_path')
         category_id = category
@@ -251,7 +252,7 @@ def editItem(category, item):
         if g.user.id == item.user.id:
             name = request.json.get('name')
             description = request.json.get('description')
-            price = request.json.get('price')
+            price = float(request.json.get('price')) * 100
             rating = request.json.get('rating')
             image_path = request.json.get('image_path')
             category_id = category
@@ -300,5 +301,5 @@ def deleteItem(category, item):
 if __name__ == '__main__':
     app.debug = True
     app.config['SECRET_KEY'] = ''.join(random.choice(
-        string.ascii_uppercase + string.digits) for x in xrange(32))
+        string.ascii_uppercase + string.digits) for x in range(32))
     app.run(host='0.0.0.0', port=5000)

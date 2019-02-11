@@ -13,7 +13,7 @@ import string
 
 Base = declarative_base()
 secret_key = ''.join(random.choice(
-    string.ascii_uppercase + string.digits) for x in xrange(32))
+    string.ascii_uppercase + string.digits) for x in range(32))
 
 
 class User(Base):
@@ -98,7 +98,7 @@ class Item(Base):
             'id': self.id,
             'name': self.name,
             'description': self.description,
-            'price': self.price / 100,
+            'price': self.price / 100.0,
             'rating': self.rating,
             'image_path': self.image_path,
             'category_id': self.category_id,
