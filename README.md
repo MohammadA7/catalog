@@ -1,6 +1,7 @@
 # Item Catalog Application
 
 This project is a web application that populates categories and their items, as well as provide a user authentication system. Users will have the ability to post, edit and delete their own items.
+Its hosted on AWS with this [domain](http://18.184.86.204.xip.io)
 
 ## Technologies used
 
@@ -8,7 +9,7 @@ This project is a web application that populates categories and their items, as 
 * Flask (backend)
 * Redis (for rate limiting users requests)
 * OAuth and JWT authentication (OAuth2 is implemented using Google API)
-* Postgresql
+* PostgreSQL
 
 ## Getting Startedcd
 
@@ -17,7 +18,7 @@ This project is a web application that populates categories and their items, as 
 * Virtualization software such as VirtualBox, VMware, etc.
 * Vagrant
 
-### Installing
+### Local installation
 
 * Clone the repo `git clone https://github.com/MohammadA7/catalog.git`
 * Cd to project directory `cd catalog`
