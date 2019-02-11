@@ -7,7 +7,7 @@ Its hosted on AWS with this [domain](http://18.184.86.204.xip.io)
 
 * React (frontend)
 * Flask (backend)
-* Redis (for rate limiting users requests)
+* Redis (for limiting users requests)
 * OAuth and JWT authentication (OAuth2 is implemented using Google API)
 * PostgreSQL
 
