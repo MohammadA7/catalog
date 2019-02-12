@@ -221,7 +221,7 @@ def createItem(category):
     try:
         name = request.json.get('name')
         description = request.json.get('description')
-        price = float(request.json.get('price')) * 100
+        price = int(float(request.json.get('price')) * 100)
         rating = request.json.get('rating')
         image_path = request.json.get('image_path')
         category_id = category
@@ -252,7 +252,7 @@ def editItem(category, item):
         if g.user.id == item.user.id:
             name = request.json.get('name')
             description = request.json.get('description')
-            price = float(request.json.get('price')) * 100
+            price = int(float(request.json.get('price')) * 100)
             rating = request.json.get('rating')
             image_path = request.json.get('image_path')
             category_id = category
